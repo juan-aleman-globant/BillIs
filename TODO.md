@@ -4,4 +4,27 @@ Vamos a crearlo en función de los modulos drawio:
     Transacción
     Categorias
 
-    Cada ervicio va a tener DTO helpers
+    Cada servicio va a tener DTO helpers
+
+
+User:
+    arreglo de usuarios
+    getUser, updateUser, newUser, deleteUser
+Transaction:
+    arreglo de transacciones
+    getTransaction, updateTransaction, newTransaction, deleteTransaction
+Category:
+    arreglo de categorias
+    getCategory, updateCategory, newCategory deleteCategory
+
+
+Preguntar:
+Las wallets deberían tener userOwner?
+
+Transacción:
+    walletFrom
+    walletTo
+    Currency
+    Amount
+
+Categoria:
