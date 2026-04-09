@@ -15,6 +15,7 @@ export class WalletsService {
         name: 'alguna billetera',
         balance: 500,
         currency: 1,
+        userOwner: 'Michael J. Fox',
       },
     ];
   }
@@ -24,6 +25,7 @@ export class WalletsService {
       ...createWalletDto,
       id: 'fakeID1',
       currency: Currency.USD,
+      userOwner: 'owner1',
     }; // For now we are faking data and using an array
     wallets.unshift(newWallet);
     return newWallet;

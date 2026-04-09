@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto/Category.dto';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 
 import { ICategory } from './interfaces/category.interface';
 

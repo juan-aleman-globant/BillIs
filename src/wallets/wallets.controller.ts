@@ -7,13 +7,9 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { type IWallet } from './interfaces/wallet.interface';
+import { type IWallet, type WalletID } from './interfaces/wallet.interface';
 import { WalletsService } from './wallets.service';
-import {
-  CreateWalletDto,
-  type WalletId,
-  UpdateWalletDto,
-} from './dto/wallet.dto';
+import { CreateWalletDto, UpdateWalletDto } from './dto/wallet.dto';
 
 @Controller('wallets')
 export class WalletsController {
@@ -35,14 +31,14 @@ export class WalletsController {
 
   @Patch(':walletId')
   updateWallet(
-    @Param('walletId') walletId: WalletId,
+    @Param('walletId') walletId: WalletID,
     @Body() updateDto: UpdateWalletDto,
   ): IWallet {
     return this.walletService.updateWallet(walletId, updateDto);
   }
 
   @Delete()
-  deleteWallet(@Param('walletId') walletId: WalletId) {
+  deleteWallet(@Param('walletId') walletId: WalletID) {
     return this.walletService.deleteWallet(walletId);
   }
 }

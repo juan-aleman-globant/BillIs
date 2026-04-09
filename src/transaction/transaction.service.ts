@@ -7,9 +7,7 @@ const transactions: ITransaction[] = [];
 @Injectable()
 export class TransactionService {
   private transactions: ITransaction[] = [];
-  private checkBalance() {
-    return true;
-  }
+
   public newTransaction(newTransaction: CreateTransaction) {
     return transactions.push({
       transactionID: Math.random().toString(36).substring(7),
