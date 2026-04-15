@@ -6,7 +6,7 @@ const transactions: ITransaction[] = [];
 
 @Injectable()
 export class TransactionService {
-  private transactions: ITransaction[] = [];
+  // private transactions: ITransaction[] = [];
 
   public newTransaction(newTransaction: CreateTransaction) {
     return transactions.push({
@@ -15,6 +15,13 @@ export class TransactionService {
       status: 'succes',
       failingError: 'Not enough money',
     });
+    /**
+     * Persists on db
+     * Check:
+     *    - transaction balance is enough if it is an Expense
+     *    - wallet type equal
+     *    - 
+     */
   }
 }
 

@@ -70,7 +70,19 @@ export class WalletsService {
   }
 
   getBalance(id: WalletID): number {
-    const walletBalance: number = wallets[id].balance;
-    return wallets[id].balance;
+    const wallet = wallets.find((wallet) => wallet.id === id);
+    if (!wallet) {
+      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+    }
+    return wallet.balance;
+  }
+
+  getWalletType(id: WalletID): Currency {
+    // Do I need to get the id first? Or if I have the a private wallet?{
+    const wallet = wallets.find((wallet) => wallet.id === id);
+    if (!wallet) {
+      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+    }
+    return wallet.currency;
   }
 }
