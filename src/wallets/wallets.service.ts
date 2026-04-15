@@ -6,7 +6,6 @@ const wallets: IWallet[] = [];
 
 @Injectable()
 export class WalletsService {
-  // private wallets: IWallet[];
   getAllWallets(): IWallet[] {
     return [
       ...wallets,
@@ -23,10 +22,8 @@ export class WalletsService {
   createNewWallet(createWalletDto: CreateWalletDto): IWallet {
     const newWallet: IWallet = {
       ...createWalletDto,
-      id: 'fakeID1',
-      currency: Currency.USD,
-      userOwner: 'owner1',
-    }; // For now we are faking data and using an array
+      id: Math.random().toString(36).substring(7),
+    };
     wallets.unshift(newWallet);
     return newWallet;
   }
@@ -78,11 +75,18 @@ export class WalletsService {
   }
 
   getWalletType(id: WalletID): Currency {
-    // Do I need to get the id first? Or if I have the a private wallet?{
     const wallet = wallets.find((wallet) => wallet.id === id);
     if (!wallet) {
       throw new NotFoundException(`There is no such wallet with the id: ${id}`);
     }
     return wallet.currency;
+  }
+
+  getOwner(id: WalletID): string {
+    const wallet = wallets.find((wallet) => wallet.id === id);
+    if (!wallet) {
+      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+    }
+    return wallet.userOwner;
   }
 }

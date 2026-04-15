@@ -1,3 +1,7 @@
+Nuevo:
+AWS
+
+Anterior:
 ### Vamos a crearlo en función de los modulos drawio:
 * Usuarios
 * Billeteras

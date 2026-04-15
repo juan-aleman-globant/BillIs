@@ -9,7 +9,7 @@ export interface ITransaction {
   transactionID: TransactionID;
   amount: number;
   type: TransactionType;
-  caegory: CategoryID;
+  category: CategoryID;
   wallet: WalletID;
   status: TransactionStatus;
   failingError: string;
