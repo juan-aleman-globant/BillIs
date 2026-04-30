@@ -1,4 +1,7 @@
 Nuevo:
+1) Reemplazar todas las acciones para que en lugar de ser por el array sea para la db.
+2) Agregar una 2a DB No relacional para cachear (Redis?)
+3) Opcional (agregarlo a un imagen docker compose)
 AWS
 
 Anterior:
