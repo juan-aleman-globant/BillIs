@@ -1,6 +1,15 @@
 Nuevo:
 1) Reemplazar todas las acciones para que en lugar de ser por el array sea para la db.
-2) Agregar una 2a DB No relacional para cachear (Redis?)
+2) Agregar una 2a DB No relacional para cachear (Redis?) // Lo vamos a usar para no ir a la DB
+    Existen 2 estrategias:
+    - Lectura: Cuando vas a leer vas al cache, preguntas, si no esta vas a la DB, isno retornas ese valor, a menos que sea un endpoint con filtros y sea mas demandante
+    - Escritura: Nuevo registro no esta en el cache, primero guardo en la DB y dps en la DB, sino se guarda no actualizo el cache
+    cuando haya alguna operacion en la DB tmb hacerla en el cache.
+
+    Usuarios tambíen en ésta tarea van a ir a la cache.
+
+Implementar bien todo en la DB y dps implememntar en redis.
+    Agregar redis en los imports del modulo en la DB.
 3) Opcional (agregarlo a un imagen docker compose)
 AWS
 

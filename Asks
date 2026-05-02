@@ -2,3 +2,6 @@ Asks:
 Necesito hacer que los atributos sean externos? (transacciones y wallets es externa, usuarios y categorias es un atributo privado)
 getWalletType consulta por la id de la wallet (Es por que está en una db externa al programa supongo)
 Los métodos getWalletType y getOwner capaz deberían no ser públicos?
+
+
+por qu un controlador no es inyectable???? 

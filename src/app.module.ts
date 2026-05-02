@@ -2,13 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WalletsModule } from './wallets/wallets.module';
-import { CategoryController } from './category/category.controller';
-import { CategoryService } from './category/category.service';
-import { UserService } from './user/user.service';
-import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './user/entities/User.entity';
 
 @Module({
   imports: [
@@ -18,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 5432,
       password: 'cdg_password',
       username: 'cdg_user',
-      entities: [],
+      entities: [UserEntity],
       database: 'postgres',
       synchronize: true,
       logging: true,
@@ -27,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UserModule,
     CategoryModule,
   ],
-  controllers: [AppController, CategoryController, UserController],
-  providers: [AppService, CategoryService, UserService],
+  controllers: [AppController], // no es necesario si los importo en imports por que ya lo hago desde los modulos
+  providers: [AppService],
 })
 export class AppModule {}
