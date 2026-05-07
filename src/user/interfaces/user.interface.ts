@@ -1,6 +1,6 @@
 export type UserID = string;
 
-export interface User {
+export interface IUser {
   userId: UserID;
   name: string;
   email: string;

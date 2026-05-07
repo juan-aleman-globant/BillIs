@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/User.entity';
-import { User } from './interfaces/user.interface';
+import { IUser } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -12,7 +12,8 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
-  async create(createUserDto: CreateUserDto): Promise<User> {
+
+  async create(createUserDto: CreateUserDto): Promise<IUser> {
     // const newUser: User = {
     //   // userId: Math.random().toString(36).substring(7),
     //   ...createUserDto,
@@ -20,11 +21,12 @@ export class UserService {
     const newUser = await this.userRepository.save(createUserDto);
     return newUser;
   }
-  async findAll(): Promise<User[]> {
+
+  async findAll(): Promise<IUser[]> {
     return await this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<IUser> {
     const user = await this.userRepository.findOne({ where: { userId: id } });
     // const user = users.find((user) => user.id === id);
     if (!user) {

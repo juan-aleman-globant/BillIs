@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entities/User.entity';
+import { CategoryEntity } from './category/entities/Category.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UserEntity } from './user/entities/User.entity';
       port: 5432,
       password: 'cdg_password',
       username: 'cdg_user',
-      entities: [UserEntity],
+      entities: [UserEntity, CategoryEntity],
       database: 'postgres',
       synchronize: true,
       logging: true,

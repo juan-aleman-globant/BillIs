@@ -1,7 +1,7 @@
 export type CategoryID = string;
 
 export interface ICategory {
-  id: CategoryID;
+  categoryId: CategoryID;
   name: string;
-  icon: string;
+  icon?: string | null;
 }
