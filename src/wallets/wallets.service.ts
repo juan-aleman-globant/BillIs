@@ -1,92 +1,140 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IWallet, Currency, WalletID } from './interfaces/wallet.interface';
 import { CreateWalletDto, UpdateWalletDto } from './dto/wallet.dto';
-
-const wallets: IWallet[] = [];
+import { WalletEntity } from './entities/Wallet.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+// const wallets: IWallet[] = [];
 
 @Injectable()
 export class WalletsService {
-  getAllWallets(): IWallet[] {
-    return [
-      ...wallets,
-      {
-        id: 'algo',
-        name: 'alguna billetera',
-        balance: 500,
-        currency: 1,
-        userOwner: 'Michael J. Fox',
-      },
-    ];
+  constructor(
+    @InjectRepository(WalletEntity)
+    private readonly walletRepository: Repository<WalletEntity>,
+  ) {}
+  async getAllWallets(): Promise<IWallet[]> {
+    const allWallets = await this.walletRepository.find();
+    return allWallets;
+    // return [
+    //   ...wallets,
+    //   {
+    //     walletId: 'algo',
+    //     name: 'alguna billetera',
+    //     balance: 500,
+    //     currency: 1,
+    //     userOwner: 'Michael J. Fox',
+    //   },
+    // ];
   }
 
-  createNewWallet(createWalletDto: CreateWalletDto): IWallet {
-    const newWallet: IWallet = {
-      ...createWalletDto,
-      id: Math.random().toString(36).substring(7),
-    };
-    wallets.unshift(newWallet);
+  async createNewWallet(createWalletDto: CreateWalletDto): Promise<IWallet> {
+    const newWallet = await this.walletRepository.save(createWalletDto);
     return newWallet;
+    // const newWallet: IWallet = {
+    //   ...createWalletDto,
+    //   walletId: Math.random().toString(36).substring(7),
+    // };
+    // wallets.unshift(newWallet);
+    // return newWallet;
   }
 
-  getWallet(walletID: WalletID): IWallet {
-    const wallet = wallets.find((wallet) => wallet.id === walletID);
+  async getWallet(walletID: WalletID): Promise<IWallet> {
+    const wallet = await this.walletRepository.findOne({
+      where: { walletId: walletID },
+    });
     if (!wallet)
       throw new NotFoundException(
         `There is no such wallet with the id: ${walletID}`,
       );
     return wallet;
+    // const wallet = wallets.find((wallet) => wallet.walletId === walletID);
+    // if (!wallet)
+    //   throw new NotFoundException(
+    //     `There is no such wallet with the id: ${walletID}`,
+    //   );
+    // return wallet;
   }
 
-  updateWallet(walletID: WalletID, updatedWallet: UpdateWalletDto): IWallet {
-    let walletToUpdate: IWallet | undefined = wallets.find(
-      (wallet) => wallet.id === walletID,
-    );
-    if (!walletToUpdate) {
+  private async checkIfExists(walletId: WalletID): Promise<boolean> {
+    const exists = await this.walletRepository.existsBy({ walletId: walletId });
+    return exists;
+  }
+
+  async updateWallet(
+    walletID: WalletID,
+    updatedWalletDto: UpdateWalletDto,
+  ): Promise<IWallet> {
+    const entity = await this.walletRepository.preload({
+      walletId: walletID,
+      ...updatedWalletDto,
+    });
+    if (!entity) {
       throw new NotFoundException(
         `There is no such wallet with the id: ${walletID}`,
       );
     }
-    walletToUpdate = {
-      ...walletToUpdate,
-      ...updatedWallet,
-    };
+    const walletToUpdate = await this.walletRepository.save(entity);
     return walletToUpdate;
+    // let walletToUpdate: IWallet | undefined = wallets.find(
+    //   (wallet) => wallet.walletId === walletID,
+    // );
+    // if (!walletToUpdate) {
+    //   throw new NotFoundException(
+    //     `There is no such wallet with the id: ${walletID}`,
+    //   );
+    // }
+    // walletToUpdate = {
+    //   ...walletToUpdate,
+    //   ...updatedWallet,
+    // };
+    // return walletToUpdate;
   }
 
-  deleteWallet(walletID: WalletID): IWallet {
-    const walletIndexToDel: number | undefined = wallets.findIndex(
-      (wallet) => wallet.id === walletID,
-    );
-    if (!walletID) {
+  async deleteWallet(walletID: WalletID): Promise<void> {
+    const exists: boolean = await this.checkIfExists(walletID);
+    if (!exists) {
       throw new NotFoundException(
         `There is no such wallet with the id: ${walletID}`,
       );
     }
-    wallets.splice(walletIndexToDel, 1);
-    return wallets[walletIndexToDel];
+    await this.walletRepository.delete({
+      walletId: walletID,
+    });
+    // if (deletedWallet.affected === 0) {
+    //   throw new NotFoundException(`User with ID ${walletID} not found`);
+    // }
   }
 
-  getBalance(id: WalletID): number {
-    const wallet = wallets.find((wallet) => wallet.id === id);
-    if (!wallet) {
-      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+  async getBalance(walletID: WalletID): Promise<number> {
+    const exists: boolean = await this.checkIfExists(walletID);
+    if (!exists) {
+      throw new NotFoundException(
+        `There is no such wallet with the id: ${walletID}`,
+      );
     }
+    const wallet = await this.getWallet(walletID);
     return wallet.balance;
   }
 
-  getWalletType(id: WalletID): Currency {
-    const wallet = wallets.find((wallet) => wallet.id === id);
-    if (!wallet) {
-      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+  async getWalletType(walletID: WalletID): Promise<Currency> {
+    const exists: boolean = await this.checkIfExists(walletID);
+    if (!exists) {
+      throw new NotFoundException(
+        `There is no such wallet with the id: ${walletID}`,
+      );
     }
+    const wallet = await this.getWallet(walletID);
     return wallet.currency;
   }
 
-  getOwner(id: WalletID): string {
-    const wallet = wallets.find((wallet) => wallet.id === id);
-    if (!wallet) {
-      throw new NotFoundException(`There is no such wallet with the id: ${id}`);
+  async getOwner(walletID: WalletID): Promise<string> {
+    const exists: boolean = await this.checkIfExists(walletID);
+    if (!exists) {
+      throw new NotFoundException(
+        `There is no such wallet with the id: ${walletID}`,
+      );
     }
+    const wallet = await this.getWallet(walletID);
     return wallet.userOwner;
   }
 }

@@ -1,3 +1,10 @@
+Nuevo: 
+    Una vez terminado transaction:
+        Validaciones: no se puede tener saldo negativo en la wallet.
+        Que pasa si se falla (transaction pero de DB?)
+        Completar escenarios de success y error
+        Que pasa si tienes una transacción +100 y dps una -50 pero la primera falla (encolar), eventos de colas?.
+
 Nuevo:
 1) Reemplazar todas las acciones para que en lugar de ser por el array sea para la db.
 2) Agregar una 2a DB No relacional para cachear (Redis?) // Lo vamos a usar para no ir a la DB

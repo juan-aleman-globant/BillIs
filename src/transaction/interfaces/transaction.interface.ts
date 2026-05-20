@@ -11,6 +11,6 @@ export interface ITransaction {
   type: TransactionType;
   category: CategoryID;
   wallet: WalletID;
-  status: TransactionStatus;
-  failingError: string;
+  status?: TransactionStatus;
+  failingError?: string;
 }

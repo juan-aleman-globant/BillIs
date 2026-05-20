@@ -15,17 +15,17 @@ import { CreateWalletDto, UpdateWalletDto } from './dto/wallet.dto';
 export class WalletsController {
   constructor(private readonly walletService: WalletsService) {}
   @Get('getAllWallets')
-  getAllWallets(): IWallet[] {
+  getAllWallets(): Promise<IWallet[]> {
     return this.walletService.getAllWallets();
   }
 
   @Post('wallets')
-  newWallet(@Body() createWalletDto: CreateWalletDto): IWallet {
+  newWallet(@Body() createWalletDto: CreateWalletDto): Promise<IWallet> {
     return this.walletService.createNewWallet(createWalletDto);
   }
 
   @Get(':walletId')
-  getWallet(@Param('walletId') walletId: string): IWallet {
+  getWallet(@Param('walletId') walletId: string): Promise<IWallet> {
     return this.walletService.getWallet(walletId);
   }
 
@@ -33,7 +33,7 @@ export class WalletsController {
   updateWallet(
     @Param('walletId') walletId: WalletID,
     @Body() updateDto: UpdateWalletDto,
-  ): IWallet {
+  ): Promise<IWallet> {
     return this.walletService.updateWallet(walletId, updateDto);
   }
 

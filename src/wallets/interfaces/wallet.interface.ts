@@ -6,7 +6,7 @@ export enum Currency {
 }
 
 export interface IWallet {
-  id: WalletID;
+  walletId: WalletID;
   userOwner: string;
   name: string;
   balance: number;
